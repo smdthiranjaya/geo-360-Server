@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const { Pool } = require('pg');
-const fetch = require('node-fetch'); // Use require('node-fetch') if Node < 18, otherwise global fetch can be used directly
+// const fetch = require('node-fetch'); // Use require('node-fetch') if Node < 18, otherwise global fetch can be used directly
 
 const app = express();
 const PORT = process.env.PORT || 3000;
