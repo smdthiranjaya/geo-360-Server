@@ -37,7 +37,7 @@ setInterval(async () => {
   } catch (error) {
     console.error('Failed to fetch or store weather data:', error);
   }
-}, 300000); // 5 minutes
+}, 60000); // 5 minutes
 
 app.get('/', (req, res) => {
   res.send('Weather Data Fetching Service is running.');
