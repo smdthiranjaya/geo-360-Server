@@ -76,6 +76,7 @@ async function storeWeatherData(weatherData) {
 
 //use this function for temporaly to avoid weatherstack API limit exceed.
 async function updateWeatherDataManually() {
+  console.log('Fetching and Storing weather data...');
   const manualWeatherData = [
       { id: 1, city: 'Colombo', lat: 6.9271, lng: 79.8612, temperature: 31, humidity: 78, airPressure: 1010, windSpeed: 15, weatherDescriptions: 'Partly cloudy', observationTime: '10:00 AM', weatherIcons: 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0002_sunny_intervals.png', isDay: true },
       { id: 2, city: 'Kandy', lat: 7.2906, lng: 80.6337, temperature: 25, humidity: 85, airPressure: 1012, windSpeed: 5, weatherDescriptions: 'Cloudy', observationTime: '11:00 AM', weatherIcons: 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0004_black_low_cloud.png', isDay: true },
@@ -115,12 +116,50 @@ async function updateWeatherDataManually() {
   }
 }
 
+app.get('/api/weather', async (req, res) => {
+  const apiKey = req.header('X-API-Key');
+  if (!apiKey || apiKey !== 'geo360apisecret') {
+      return res.status(401).send('Unauthorized');
+  }
+
+  const client = await pool.connect();
+  try {
+      const { rows } = await client.query('SELECT * FROM weather_data');
+      const response = {
+          data: rows.map(row => ({
+              type: 'weather',
+              id: row.id,
+              attributes: {
+                  city: row.city,
+                  latitude: row.latitude,
+                  longitude: row.longitude,
+                  temperature: row.temperature,
+                  humidity: row.humidity,
+                  air_pressure: row.air_pressure,
+                  wind_speed: row.wind_speed,
+                  weather_descriptions: row.weather_descriptions,
+                  observation_time: row.observation_time,
+                  weather_icons: row.weather_icons,
+                  is_day: row.is_day,
+              }
+          }))
+      };
+      res.json(response);
+  } catch (error) {
+      console.error('Failed to fetch weather data:', error);
+      res.status(500).send('Server error');
+  } finally {
+      client.release();
+  }
+});
+
+
 // Scheduled task to run every 5 minutes
 setInterval(async () => {
   try {
     // const weatherData = await fetchWeatherData();
     // await storeWeatherData(weatherData);
-    updateWeatherDataManually();
+    await updateWeatherDataManually();
   } catch (error) {
     console.error('Failed to fetch or store weather data:', error);
   }
