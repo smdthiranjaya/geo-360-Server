@@ -74,11 +74,53 @@ async function storeWeatherData(weatherData) {
   }
 }
 
+//use this function for temporaly to avoid weatherstack API limit exceed.
+async function updateWeatherDataManually() {
+  const manualWeatherData = [
+      { id: 1, city: 'Colombo', lat: 6.9271, lng: 79.8612, temperature: 31, humidity: 78, airPressure: 1010, windSpeed: 15, weatherDescriptions: 'Partly cloudy', observationTime: '10:00 AM', weatherIcons: 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0002_sunny_intervals.png', isDay: true },
+      { id: 2, city: 'Kandy', lat: 7.2906, lng: 80.6337, temperature: 25, humidity: 85, airPressure: 1012, windSpeed: 5, weatherDescriptions: 'Cloudy', observationTime: '11:00 AM', weatherIcons: 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0004_black_low_cloud.png', isDay: true },
+      { id: 3, city: 'Galle', lat: 6.0535, lng: 80.2210, temperature: 29, humidity: 80, airPressure: 1009, windSpeed: 10, weatherDescriptions: 'Sunny', observationTime: '09:00 AM', weatherIcons: 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png', isDay: true }
+  ];
+
+  const client = await pool.connect();
+  try {
+      await client.query('BEGIN');
+      for (const data of manualWeatherData) {
+          const insertQuery = `
+              INSERT INTO weather_data (id, city, latitude, longitude, temperature, humidity, air_pressure, wind_speed, weather_descriptions, observation_time, weather_icons, is_day)
+              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+              ON CONFLICT (id) DO UPDATE 
+              SET temperature = EXCLUDED.temperature,
+                  humidity = EXCLUDED.humidity,
+                  air_pressure = EXCLUDED.air_pressure,
+                  wind_speed = EXCLUDED.wind_speed,
+                  weather_descriptions = EXCLUDED.weather_descriptions,
+                  observation_time = EXCLUDED.observation_time,
+                  weather_icons = EXCLUDED.weather_icons,
+                  is_day = EXCLUDED.is_day;
+          `;
+          const values = [
+              data.id, data.city, data.lat, data.lng, data.temperature, data.humidity, 
+              data.airPressure, data.windSpeed, data.weatherDescriptions, data.observationTime, 
+              data.weatherIcons, data.isDay
+          ];
+          await client.query(insertQuery, values);
+      }
+      await client.query('COMMIT');
+  } catch (e) {
+      await client.query('ROLLBACK');
+      throw e;
+  } finally {
+      client.release();
+  }
+}
+
 // Scheduled task to run every 5 minutes
 setInterval(async () => {
   try {
-    const weatherData = await fetchWeatherData();
-    await storeWeatherData(weatherData);
+    // const weatherData = await fetchWeatherData();
+    // await storeWeatherData(weatherData);
+    updateWeatherDataManually();
   } catch (error) {
     console.error('Failed to fetch or store weather data:', error);
   }
