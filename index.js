@@ -18,7 +18,7 @@ const pool = new Pool({
 async function fetchWeatherData() {
   console.log('Fetching weather data...');
   const apiKey = "5ae36817ed6bfabe7ceceeb89a8e05e2";
-  const cities = ["Colombo", "Kandy", "Galle", "Jaffna", "Mannar", "Mullaitivu", "Trincomalee", "Vavuniya", "Anuradhapura", "Puttalam", "Polonnaruwa", "Batticaloa", "Kurunegala", "Ratnapura", "Nuwara Eliya", "Badulla", "Pottuvil", "Hambanthota"];
+  const cities = ["Colombo", "Kandy", "Galle", "Jaffna", "Trincomalee", "Vavuniya", "Anuradhapura", "Puttalam", "Polonnaruwa", "Batticaloa", "Kurunegala", "Ratnapura", "Nuwara Eliya", "Badulla", "Pottuvil"];
   const weatherData = await Promise.all(cities.map(city =>
       fetch(`http://api.weatherstack.com/current?access_key=${apiKey}&query=${city}`)
           .then(response => response.json())
