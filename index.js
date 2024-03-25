@@ -18,7 +18,7 @@ const pool = new Pool({
 async function fetchWeatherData() {
   console.log('Fetching weather data...');
   const apiKey = "5ae36817ed6bfabe7ceceeb89a8e05e2";
-  const cities = ["Colombo", "Kandy", "Galle"];
+  const cities = ["Colombo", "Kandy", "Galle", "Jaffna", "Mannar", "Mullaitivu", "Trincomalee", "Vavuniya", "Anuradhapura", "Puttalam", "Polonnaruwa", "Batticaloa", "Kurunegala", "Ratnapura", "Nuwara Eliya", "Badulla", "Pottuvil", "Hambanthota"];
   const weatherData = await Promise.all(cities.map(city =>
       fetch(`http://api.weatherstack.com/current?access_key=${apiKey}&query=${city}`)
           .then(response => response.json())
@@ -158,9 +158,9 @@ app.get('/api/weather', async (req, res) => {
 // Scheduled task to run every 5 minutes
 setInterval(async () => {
   try {
-    // const weatherData = await fetchWeatherData();
-    // await storeWeatherData(weatherData);
-    await updateWeatherDataManually();
+    const weatherData = await fetchWeatherData();
+    await storeWeatherData(weatherData);
+    // await updateWeatherDataManually();
   } catch (error) {
     console.error('Failed to fetch or store weather data:', error);
   }
