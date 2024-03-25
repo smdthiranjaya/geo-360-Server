@@ -158,9 +158,9 @@ app.get('/api/weather', async (req, res) => {
 // Scheduled task to run every 5 minutes
 setInterval(async () => {
   try {
-    const weatherData = await fetchWeatherData();
-    await storeWeatherData(weatherData);
-    // await updateWeatherDataManually();
+    // const weatherData = await fetchWeatherData();
+    // await storeWeatherData(weatherData);
+    await updateWeatherDataManually();
   } catch (error) {
     console.error('Failed to fetch or store weather data:', error);
   }
