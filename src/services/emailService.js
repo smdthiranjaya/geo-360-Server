@@ -20,6 +20,25 @@ async function sendWeatherUpdates() {
     }
 }
 
+async function fetchWeatherDataForCity(city) {
+    const client = await pool.connect();
+    try {
+        // Example query - adjust based on your actual data schema and needs
+        const query = `
+            SELECT MAX(temperature) AS max_temp, MIN(temperature) AS min_temp, AVG(temperature) AS avg_temp
+            FROM weather_data
+            WHERE city = $1;
+        `;
+        const result = await client.query(query, [city]);
+        return result.rows[0]; // Returns an object with max_temp, min_temp, and avg_temp
+    } catch (error) {
+        console.error(`Failed to fetch weather data for city ${city}:`, error);
+        throw error; // Rethrowing the error for caller to handle
+    } finally {
+        client.release();
+    }
+}
+
 // Example sendEmail function
 async function sendEmail(recipient, city, weatherData) {
     let transporter = nodemailer.createTransport({
