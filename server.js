@@ -6,8 +6,6 @@ const { updateWeatherDataManually } = require('./src/controllers/weatherControll
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocs = require('./src/swaggerConfig');
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
 const app = express();
 app.use(cors());
 
@@ -16,6 +14,8 @@ app.use(weatherRoutes);
 app.get('/', (req, res) => {
   res.send('Weather Data Fetching Service is running.');
 });
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 setInterval(async () => {
   try {
