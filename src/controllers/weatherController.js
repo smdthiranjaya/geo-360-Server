@@ -1,4 +1,5 @@
 const { storeWeatherData, fetchAllWeatherData } = require('../models/weatherModel');
+const pool = require('../db'); 
 
 async function updateWeatherDataManually() {
     console.log('Fetching and Storing weather data...');
