@@ -80,14 +80,23 @@ async function updateWeatherDataManually() {
   
   // Define all cities with base information
   const cities = [
-      { id: 1, city: 'Colombo', lat: 6.932, lng: 79.848 },
-      { id: 2, city: 'Kandy', lat: 7.296, lng: 80.636 },
-      { id: 3, city: 'Galle', lat: 6.037, lng: 80.217 },
-      { id: 4, city: 'Jaffna', lat: 9.669, lng: 80.007 },
-      { id: 5, city: 'Trincomalee', lat: 8.571, lng: 81.234 },
-      { id: 6, city: 'Vavuniya', lat: 8.751, lng: 80.497 },
-      // Add the rest of the cities here
-  ];
+    { id: 1, city: 'Colombo', lat: 6.932, lng: 79.848 },
+    { id: 2, city: 'Kandy', lat: 7.296, lng: 80.636 },
+    { id: 3, city: 'Galle', lat: 6.037, lng: 80.217 },
+    { id: 4, city: 'Jaffna', lat: 9.669, lng: 80.007 },
+    { id: 5, city: 'Trincomalee', lat: 8.571, lng: 81.234 },
+    { id: 6, city: 'Vavuniya', lat: 8.751, lng: 80.497 },
+    { id: 7, city: 'Anuradhapura', lat: 8.312, lng: 80.413 },
+    { id: 8, city: 'Puttalam', lat: 8.036, lng: 79.828 },
+    { id: 9, city: 'Polonnaruwa', lat: 7.94, lng: 81.003 },
+    { id: 10, city: 'Batticaloa', lat: 7.71, lng: 81.692 },
+    { id: 11, city: 'Kurunegala', lat: 7.486, lng: 80.362 },
+    { id: 12, city: 'Ratnapura', lat: 6.683, lng: 80.399 },
+    { id: 13, city: 'Nuwara Eliya', lat: 6.971, lng: 80.783 },
+    { id: 14, city: 'Badulla', lat: 6.99, lng: 81.056 },
+    { id: 15, city: 'Pottuvil', lat: 6.876, lng: 81.827 }
+];
+
 
   const weatherIconMapping = {
     'Sunny': 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png',
