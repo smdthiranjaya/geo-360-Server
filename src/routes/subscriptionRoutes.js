@@ -1,7 +1,6 @@
-// src/routes/subscriptionRoutes.js
 const express = require('express');
 const router = express.Router();
-const { addSubscription } = require('../controllers/subscriptionController'); // Define this controller
+const { addSubscription } = require('../controllers/subscriptionController');
 
 router.post('/subscribe', addSubscription);
 

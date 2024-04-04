@@ -23,7 +23,7 @@ app.use('/api', subscriptionRoutes);
 
 setInterval(() => {
   sendWeatherUpdates().catch(console.error);
-}, 300000); // 24 hours in milliseconds
+}, 86400000);
 
 setInterval(async () => {
   try {
@@ -31,7 +31,7 @@ setInterval(async () => {
   } catch (error) {
     console.error('Failed to fetch or store weather data:', error);
   }
-}, 300000); // 5 minutes
+}, 300000);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

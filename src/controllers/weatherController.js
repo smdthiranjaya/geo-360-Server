@@ -4,7 +4,6 @@ const pool = require('../db');
 async function updateWeatherDataManually() {
     console.log('Fetching and Storing weather data...');
     
-    // Define all cities with base information
     const cities = [
       { id: 1, city: 'Colombo', lat: 6.932, lng: 79.848 },
       { id: 2, city: 'Kandy', lat: 7.296, lng: 80.636 },

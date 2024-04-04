@@ -1,4 +1,4 @@
-// src/services/emailService.js
+
 const nodemailer = require('nodemailer');
 const pool = require('../db');
 
@@ -7,10 +7,10 @@ async function sendWeatherUpdates() {
     try {
         const { rows: subscriptions } = await client.query('SELECT DISTINCT city FROM subscriptions;');
         for (const { city } of subscriptions) {
-            const weatherData = await fetchWeatherDataForCity(city); // Implement this function based on your needs
+            const weatherData = await fetchWeatherDataForCity(city); 
             const { rows: subscribers } = await client.query('SELECT email FROM subscriptions WHERE city = $1;', [city]);
             for (const { email } of subscribers) {
-                await sendEmail(email, city, weatherData); // Implement sendEmail function
+                await sendEmail(email, city, weatherData);
             }
         }
     } catch (error) {
@@ -23,26 +23,25 @@ async function sendWeatherUpdates() {
 async function fetchWeatherDataForCity(city) {
     const client = await pool.connect();
     try {
-        // Example query - adjust based on your actual data schema and needs
         const query = `
             SELECT MAX(temperature) AS max_temp, MIN(temperature) AS min_temp, AVG(temperature) AS avg_temp
             FROM weather_data
             WHERE city = $1;
         `;
         const result = await client.query(query, [city]);
-        return result.rows[0]; // Returns an object with max_temp, min_temp, and avg_temp
+        return result.rows[0]; 
     } catch (error) {
         console.error(`Failed to fetch weather data for city ${city}:`, error);
-        throw error; // Rethrowing the error for caller to handle
+        throw error; 
     } finally {
         client.release();
     }
 }
 
-// Example sendEmail function
+
 async function sendEmail(recipient, city, weatherData) {
     let transporter = nodemailer.createTransport({
-        service: 'gmail', // Example with Gmail; configure as needed
+        service: 'gmail', 
         auth: {
             user: 'geo360.live@gmail.com',
             pass: 'aymj fcyu udnc ghpd'
