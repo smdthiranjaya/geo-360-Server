@@ -3,6 +3,7 @@ const cors = require('cors');
 const { PORT } = require('./src/config');
 const weatherRoutes = require('./src/routes/weatherRoutes');
 const { updateWeatherDataManually } = require('./src/controllers/weatherController');
+const { sendWeatherUpdates } = require('./src/services/emailService');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocs = require('./src/swaggerConfig');
 
@@ -16,6 +17,10 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+setInterval(() => {
+  sendWeatherUpdates().catch(console.error);
+}, 300000); // 24 hours in milliseconds
 
 setInterval(async () => {
   try {

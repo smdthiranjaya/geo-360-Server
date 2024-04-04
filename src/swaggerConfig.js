@@ -4,7 +4,7 @@ const swaggerOptions = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Weather API',
+            title: 'Geo 360 Live Weather API',
             version: '1.0.0',
             description: 'A simple Express Weather API'
         },
