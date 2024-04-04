@@ -11,6 +11,7 @@ const subscriptionRoutes = require('./src/routes/subscriptionRoutes');
 const app = express();
 app.use(cors());
 
+app.use(express.json()); 
 app.use(weatherRoutes);
 
 app.get('/', (req, res) => {
