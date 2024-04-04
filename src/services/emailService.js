@@ -1,6 +1,6 @@
 // src/services/emailService.js
 const nodemailer = require('nodemailer');
-const { pool } = require('../db');
+const pool = require('../db');
 
 async function sendWeatherUpdates() {
     const client = await pool.connect();
@@ -31,7 +31,7 @@ async function sendEmail(recipient, city, weatherData) {
     });
 
     let mailOptions = {
-        from: 'geo360live#540',
+        from: 'geo360.live@gmail.com',
         to: recipient,
         subject: `Daily Weather Update for ${city}`,
         text: `Here's the weather update for ${city}: ${JSON.stringify(weatherData)}`
