@@ -93,8 +93,33 @@ async function updateWeatherDataManually() {
   }
   
 
-// async function getWeather(req, res) {
-//   // Your route logic here
-// }
+  async function getWeather(req, res) {
+    try {
+        const weatherData = await fetchAllWeatherData();
+        const response = {
+            data: weatherData.map(row => ({
+                type: 'weather',
+                id: row.id,
+                attributes: {
+                    city: row.city,
+                    latitude: row.latitude,
+                    longitude: row.longitude,
+                    temperature: row.temperature,
+                    humidity: row.humidity,
+                    air_pressure: row.air_pressure,
+                    wind_speed: row.wind_speed,
+                    weather_descriptions: row.weather_descriptions,
+                    observation_time: row.observation_time,
+                    weather_icons: row.weather_icons,
+                    is_day: row.is_day,
+                }
+            }))
+        };
+        res.json(response);
+    } catch (error) {
+        console.error('Failed to serve weather data:', error);
+        res.status(500).send('Server error');
+    }
+}
 
-module.exports = { updateWeatherDataManually };
+module.exports = { updateWeatherDataManually, getWeather };
