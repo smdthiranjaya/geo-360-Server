@@ -8,7 +8,7 @@ router.get('/api/weather', getWeather);
  * @swagger
  * /api/weather:
  *   get:
- *     summary: Retrieves weather data
+ *     summary: Retrieves weather data from heroku postgresql db.
  *     description: Fetches weather data for all cities.
  *     responses:
  *       200:

@@ -1,9 +1,9 @@
 const { storeWeatherData, fetchAllWeatherData } = require('../models/weatherModel');
+const pool = require('../db'); 
 
 async function updateWeatherDataManually() {
     console.log('Fetching and Storing weather data...');
     
-    // Define all cities with base information
     const cities = [
       { id: 1, city: 'Colombo', lat: 6.932, lng: 79.848 },
       { id: 2, city: 'Kandy', lat: 7.296, lng: 80.636 },
@@ -93,8 +93,33 @@ async function updateWeatherDataManually() {
   }
   
 
-// async function getWeather(req, res) {
-//   // Your route logic here
-// }
+  async function getWeather(req, res) {
+    try {
+        const weatherData = await fetchAllWeatherData();
+        const response = {
+            data: weatherData.map(row => ({
+                type: 'weather',
+                id: row.id,
+                attributes: {
+                    city: row.city,
+                    latitude: row.latitude,
+                    longitude: row.longitude,
+                    temperature: row.temperature,
+                    humidity: row.humidity,
+                    air_pressure: row.air_pressure,
+                    wind_speed: row.wind_speed,
+                    weather_descriptions: row.weather_descriptions,
+                    observation_time: row.observation_time,
+                    weather_icons: row.weather_icons,
+                    is_day: row.is_day,
+                }
+            }))
+        };
+        res.json(response);
+    } catch (error) {
+        console.error('Failed to serve weather data:', error);
+        res.status(500).send('Server error');
+    }
+}
 
-module.exports = { updateWeatherDataManually };
+module.exports = { updateWeatherDataManually, getWeather };

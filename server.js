@@ -3,19 +3,27 @@ const cors = require('cors');
 const { PORT } = require('./src/config');
 const weatherRoutes = require('./src/routes/weatherRoutes');
 const { updateWeatherDataManually } = require('./src/controllers/weatherController');
+const { sendWeatherUpdates } = require('./src/services/emailService');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocs = require('./src/swaggerConfig');
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+const subscriptionRoutes = require('./src/routes/subscriptionRoutes');
 
 const app = express();
 app.use(cors());
 
+app.use(express.json()); 
 app.use(weatherRoutes);
 
 app.get('/', (req, res) => {
   res.send('Weather Data Fetching Service is running.');
 });
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api', subscriptionRoutes);
+
+setInterval(() => {
+  sendWeatherUpdates().catch(console.error);
+}, 86400000);
 
 setInterval(async () => {
   try {
@@ -23,7 +31,7 @@ setInterval(async () => {
   } catch (error) {
     console.error('Failed to fetch or store weather data:', error);
   }
-}, 300000); // 5 minutes
+}, 300000);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

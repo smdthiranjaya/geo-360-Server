@@ -34,9 +34,18 @@ async function storeWeatherData(weatherData) {
         client.release();
     }
   }
+  
+  async function fetchAllWeatherData() {
+    const client = await pool.connect();
+    try {
+        const { rows } = await client.query('SELECT * FROM weather_data');
+        return rows;
+    } catch (error) {
+        console.error('Failed to fetch weather data:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+}
 
-// async function fetchAllWeatherData() {
-//   // Logic to fetch all weather data from DB
-// }
-
-module.exports = { storeWeatherData };
+module.exports = { storeWeatherData, fetchAllWeatherData };
