@@ -45,7 +45,7 @@ async function sendEmail(recipient, city, weatherData) {
         service: 'gmail', // Example with Gmail; configure as needed
         auth: {
             user: 'geo360.live@gmail.com',
-            pass: 'geo360live#540'
+            pass: 'aymj fcyu udnc ghpd'
         }
     });
 
