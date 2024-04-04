@@ -1,5 +1,4 @@
-// src/controllers/subscriptionController.js
-const { pool } = require('../db');
+const pool = require('../db'); 
 
 async function addSubscription(req, res) {
     const { email, city } = req.body;
