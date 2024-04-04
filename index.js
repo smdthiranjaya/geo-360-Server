@@ -89,33 +89,41 @@ async function updateWeatherDataManually() {
       // Add the rest of the cities here
   ];
 
-  const manualWeatherData = cities.map(city => {
-      // Generate random weather data for each city
-      const temperature = Math.floor(Math.random() * 15) + 20; // Temperature between 20 and 34
-      const humidity = Math.floor(Math.random() * 50) + 50; // Humidity between 50 and 100
-      const airPressure = Math.floor(Math.random() * 6) + 1009; // Air pressure between 1009 and 1014
-      const windSpeed = Math.floor(Math.random() * 15) + 5; // Wind speed between 5 and 19
-      const descriptions = ['Sunny', 'Partly cloudy', 'Cloudy', 'Light rain shower', 'Patchy rain nearby'];
-      const weatherDescriptions = descriptions[Math.floor(Math.random() * descriptions.length)];
-      const isDay = true; // Assuming daytime for simplicity
-      const observationTime = `${Math.floor(Math.random() * 12) + 1}:00 ${Math.random() > 0.5 ? 'AM' : 'PM'}`; // Random hour
-      const weatherIcons = `https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_000${Math.floor(Math.random() * 9) + 1}_sunny.png`; // Random icon
+  const weatherIconMapping = {
+    'Sunny': 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png',
+    'Partly cloudy': 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0002_sunny_intervals.png',
+    'Cloudy': 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0004_black_low_cloud.png',
+    'Light rain shower': 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0009_light_rain_showers.png',
+    'Patchy rain nearby': 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0009_light_rain_showers.png'
+};
 
-      return {
-          id: city.id,
-          city: city.city,
-          lat: city.lat,
-          lng: city.lng,
-          temperature,
-          humidity,
-          airPressure,
-          windSpeed,
-          weatherDescriptions,
-          observationTime,
-          weatherIcons,
-          isDay
-      };
-  });
+const manualWeatherData = cities.map(city => {
+    const descriptions = Object.keys(weatherIconMapping);
+    const weatherDescriptions = descriptions[Math.floor(Math.random() * descriptions.length)];
+    const weatherIcons = weatherIconMapping[weatherDescriptions];
+
+    const temperature = Math.floor(Math.random() * 15) + 20;
+    const humidity = Math.floor(Math.random() * 50) + 50;
+    const airPressure = Math.floor(Math.random() * 6) + 1009;
+    const windSpeed = Math.floor(Math.random() * 15) + 5;
+    const isDay = true;
+    const observationTime = `${Math.floor(Math.random() * 12) + 1}:00 ${Math.random() > 0.5 ? 'AM' : 'PM'}`;
+
+    return {
+        id: city.id,
+        city: city.city,
+        lat: city.lat,
+        lng: city.lng,
+        temperature,
+        humidity,
+        airPressure,
+        windSpeed,
+        weatherDescriptions,
+        observationTime,
+        weatherIcons,
+        isDay
+    };
+});
 
   const client = await pool.connect();
   try {
