@@ -50,23 +50,21 @@ async function sendEmail(recipient, city, weatherData) {
     });
 
     let mailOptions = {
-        from: 'GEO-360 Live',
+        from: 'geo360.live@gmail.com',
         to: recipient,
         subject: `Weather Update for ${city}`,
-        text: `
-            Good day!
+        text: `Good day! ✨
             
             Here's your latest weather update for ${city}:
             
-            - Maximum Temperature: ${weatherData.max_temp}°C
-            - Minimum Temperature: ${weatherData.min_temp}°C
-            - Average Temperature: ${parseFloat(weatherData.avg_temp).toFixed(2)}°C
+            🔺 - Maximum Temperature: ${weatherData.max_temp}°C
+            🔻 - Minimum Temperature: ${weatherData.min_temp}°C
+            🔍 - Average Temperature: ${parseFloat(weatherData.avg_temp).toFixed(2)}°C
             
             Stay informed and plan your day accordingly!
             
             Best,
-            Geo360 Team.
-        `
+            Geo360 Team.`
     };
 
     transporter.sendMail(mailOptions, function(error, info){
