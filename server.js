@@ -6,6 +6,7 @@ const { updateWeatherDataManually } = require('./src/controllers/weatherControll
 const { sendWeatherUpdates } = require('./src/services/emailService');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocs = require('./src/swaggerConfig');
+const subscriptionRoutes = require('./src/routes/subscriptionRoutes');
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api', subscriptionRoutes);
 
 setInterval(() => {
   sendWeatherUpdates().catch(console.error);
