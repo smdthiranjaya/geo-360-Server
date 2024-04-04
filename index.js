@@ -7,7 +7,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 
-// PostgreSQL client setup
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -78,11 +77,45 @@ async function storeWeatherData(weatherData) {
 //use this function for temporaly to avoid weatherstack API limit exceed.
 async function updateWeatherDataManually() {
   console.log('Fetching and Storing weather data...');
-  const manualWeatherData = [
-      { id: 1, city: 'Colombo', lat: 6.9271, lng: 79.8612, temperature: 31, humidity: 78, airPressure: 1010, windSpeed: 15, weatherDescriptions: 'Partly cloudy', observationTime: '10:00 AM', weatherIcons: 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0002_sunny_intervals.png', isDay: true },
-      { id: 2, city: 'Kandy', lat: 7.2906, lng: 80.6337, temperature: 25, humidity: 85, airPressure: 1012, windSpeed: 5, weatherDescriptions: 'Cloudy', observationTime: '11:00 AM', weatherIcons: 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0004_black_low_cloud.png', isDay: true },
-      { id: 3, city: 'Galle', lat: 6.0535, lng: 80.2210, temperature: 29, humidity: 80, airPressure: 1009, windSpeed: 10, weatherDescriptions: 'Sunny', observationTime: '09:00 AM', weatherIcons: 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png', isDay: true }
+  
+  // Define all cities with base information
+  const cities = [
+      { id: 1, city: 'Colombo', lat: 6.932, lng: 79.848 },
+      { id: 2, city: 'Kandy', lat: 7.296, lng: 80.636 },
+      { id: 3, city: 'Galle', lat: 6.037, lng: 80.217 },
+      { id: 4, city: 'Jaffna', lat: 9.669, lng: 80.007 },
+      { id: 5, city: 'Trincomalee', lat: 8.571, lng: 81.234 },
+      { id: 6, city: 'Vavuniya', lat: 8.751, lng: 80.497 },
+      // Add the rest of the cities here
   ];
+
+  const manualWeatherData = cities.map(city => {
+      // Generate random weather data for each city
+      const temperature = Math.floor(Math.random() * 15) + 20; // Temperature between 20 and 34
+      const humidity = Math.floor(Math.random() * 50) + 50; // Humidity between 50 and 100
+      const airPressure = Math.floor(Math.random() * 6) + 1009; // Air pressure between 1009 and 1014
+      const windSpeed = Math.floor(Math.random() * 15) + 5; // Wind speed between 5 and 19
+      const descriptions = ['Sunny', 'Partly cloudy', 'Cloudy', 'Light rain shower', 'Patchy rain nearby'];
+      const weatherDescriptions = descriptions[Math.floor(Math.random() * descriptions.length)];
+      const isDay = true; // Assuming daytime for simplicity
+      const observationTime = `${Math.floor(Math.random() * 12) + 1}:00 ${Math.random() > 0.5 ? 'AM' : 'PM'}`; // Random hour
+      const weatherIcons = `https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_000${Math.floor(Math.random() * 9) + 1}_sunny.png`; // Random icon
+
+      return {
+          id: city.id,
+          city: city.city,
+          lat: city.lat,
+          lng: city.lng,
+          temperature,
+          humidity,
+          airPressure,
+          windSpeed,
+          weatherDescriptions,
+          observationTime,
+          weatherIcons,
+          isDay
+      };
+  });
 
   const client = await pool.connect();
   try {
@@ -110,12 +143,14 @@ async function updateWeatherDataManually() {
       }
       await client.query('COMMIT');
   } catch (e) {
+      console.error('Failed to update weather data:', e);
       await client.query('ROLLBACK');
-      throw e;
   } finally {
       client.release();
   }
 }
+
+
 
 app.get('/api/weather', async (req, res) => {
   const apiKey = req.header('X-API-Key');
