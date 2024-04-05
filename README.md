@@ -35,4 +35,4 @@ To start the server, run:
 
 ### API Documentation
 
-Once the server is running, you can access the Swagger UI for the API documentation by navigating to http://localhost:{PORT}/api-docs, where {PORT} is your server's running port.
+Once the server is running, you can access the Swagger UI for the API documentation by navigating to https://www.geo360live.tech/api-docs, where {PORT} is your server's running port.
