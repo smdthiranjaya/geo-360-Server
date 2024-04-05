@@ -23,7 +23,7 @@ app.use('/api', subscriptionRoutes);
 
 setInterval(() => {
   sendWeatherUpdates().catch(console.error);
-}, 86400000);
+}, 43200000); // 12 hours in milliseconds
 
 setInterval(async () => {
   try {
