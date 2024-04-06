@@ -8,24 +8,33 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocs = require('./src/swaggerConfig');
 const subscriptionRoutes = require('./src/routes/subscriptionRoutes');
 
-const app = express();
+// Initialize Express app
+const app = express(); 
+ // Enable CORS
 app.use(cors());
 
+// Parse JSON request bodies
 app.use(express.json()); 
+// Use weather routes
 app.use(weatherRoutes);
 
-app.get('/', (req, res) => {
+// Root endpoint
+app.get('/', (req, res) => { 
   res.send('Weather Data Fetching Service is running.');
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-app.use('/api', subscriptionRoutes);
+// Use swagger doc routes
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs)); 
+// Use subscription routes
+app.use('/api', subscriptionRoutes); 
 
-setInterval(() => {
+// Schedule email updates (6 hours)
+setInterval(() => { 
   sendWeatherUpdates().catch(console.error);
-}, 43200000); 
+}, 21600000);
 
-setInterval(async () => {
+// Schedule weather data updates (5 minutes)
+setInterval(async () => { 
   try {
     await updateWeatherDataManually();
   } catch (error) {

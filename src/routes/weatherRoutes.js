@@ -2,8 +2,10 @@ const express = require('express');
 const { getWeather } = require('../controllers/weatherController');
 const router = express.Router();
 
+// Define a GET route for fetching weather data
 router.get('/api/weather', getWeather);
 
+// Swagger documentation for the /api/weather endpoint
 /**
  * @swagger
  * /api/weather:

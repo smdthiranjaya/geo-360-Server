@@ -1,10 +1,12 @@
 const pool = require('../db');
 
+// Function to store multiple weather data entries into the database
 async function storeWeatherData(weatherData) {
     console.log('Storing weather data...');
     const client = await pool.connect();
     try {
         await client.query('BEGIN');
+        // Prepare and execute SQL to insert or update weather data for each entry
         for (const data of weatherData) {
             const insertQuery = `
                 INSERT INTO weather_data (id, city, latitude, longitude, temperature, humidity, air_pressure, wind_speed, weather_descriptions, observation_time, weather_icons, is_day)
@@ -35,9 +37,11 @@ async function storeWeatherData(weatherData) {
     }
   }
   
+  // Function to fetch all weather data from the database
   async function fetchAllWeatherData() {
     const client = await pool.connect();
     try {
+        // Execute a SELECT query to fetch all weather data
         const { rows } = await client.query('SELECT * FROM weather_data');
         return rows;
     } catch (error) {
@@ -48,4 +52,5 @@ async function storeWeatherData(weatherData) {
     }
 }
 
+// Export the functions for external use
 module.exports = { storeWeatherData, fetchAllWeatherData };
