@@ -1,8 +1,10 @@
 const pool = require('../db'); 
 
+// Define an asynchronous function to add a subscription
 async function addSubscription(req, res) {
     const { email, city } = req.body;
     try {
+        // Connect to the database
         const client = await pool.connect();
         const insertQuery = `
             INSERT INTO subscriptions (email, city)
@@ -10,6 +12,7 @@ async function addSubscription(req, res) {
             RETURNING *;
         `;
         const result = await client.query(insertQuery, [email, city]);
+         // Release database client back to pool
         client.release();
 
         res.status(200).json({
@@ -26,5 +29,6 @@ async function addSubscription(req, res) {
     }
 }
 
+// Export the addSubscription function
 module.exports = { addSubscription };
 

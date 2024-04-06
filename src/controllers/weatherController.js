@@ -1,9 +1,11 @@
 const { storeWeatherData, fetchAllWeatherData } = require('../models/weatherModel');
 const pool = require('../db'); 
 
+ // Function to manually update weather data
 async function updateWeatherDataManually() {
     console.log('Fetching and Storing weather data...');
     
+    // Define static data for cities and geo locations
     const cities = [
       { id: 1, city: 'Colombo', lat: 6.932, lng: 79.848 },
       { id: 2, city: 'Kandy', lat: 7.296, lng: 80.636 },
@@ -23,6 +25,7 @@ async function updateWeatherDataManually() {
   ];
   
   
+  // Generate and map mock weather data for cities
     const weatherIconMapping = {
       'Sunny': 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png',
       'Partly cloudy': 'https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0002_sunny_intervals.png',
@@ -59,10 +62,14 @@ async function updateWeatherDataManually() {
       };
   });
   
+  // Connect to the database
     const client = await pool.connect();
     try {
+        // Start transaction
         await client.query('BEGIN');
         for (const data of manualWeatherData) {
+            
+            // Insert or update weather data in the database for each city
             const insertQuery = `
                 INSERT INTO weather_data (id, city, latitude, longitude, temperature, humidity, air_pressure, wind_speed, weather_descriptions, observation_time, weather_icons, is_day)
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
@@ -83,19 +90,24 @@ async function updateWeatherDataManually() {
             ];
             await client.query(insertQuery, values);
         }
+        // Commit transaction if successful
         await client.query('COMMIT');
     } catch (e) {
         console.error('Failed to update weather data:', e);
+        // Rollback transaction in case of an error
         await client.query('ROLLBACK');
     } finally {
+        // Release database client
         client.release();
     }
   }
   
-
+// Function to serve weather data via HTTP GET request
   async function getWeather(req, res) {
     try {
+        // Fetch weather data from the database and format the response
         const weatherData = await fetchAllWeatherData();
+        // Send formatted weather data as response
         const response = {
             data: weatherData.map(row => ({
                 type: 'weather',
@@ -122,4 +134,5 @@ async function updateWeatherDataManually() {
     }
 }
 
+// Export the functions for use in other modules
 module.exports = { updateWeatherDataManually, getWeather };

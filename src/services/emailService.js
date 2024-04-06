@@ -2,13 +2,19 @@
 const nodemailer = require('nodemailer');
 const pool = require('../db');
 
+// Asynchronously send weather updates to all subscribers
 async function sendWeatherUpdates() {
     const client = await pool.connect();
     try {
+        // Retrieve a list of distinct cities from subscriptions
         const { rows: subscriptions } = await client.query('SELECT DISTINCT city FROM subscriptions;');
+        // Iterate over each city to fetch and send weather updates
         for (const { city } of subscriptions) {
+            // Fetch weather data for the current city
             const weatherData = await fetchWeatherDataForCity(city); 
+            // Retrieve all email addresses subscribed to the current city
             const { rows: subscribers } = await client.query('SELECT email FROM subscriptions WHERE city = $1;', [city]);
+            // Send an email with weather data to each subscriber
             for (const { email } of subscribers) {
                 await sendEmail(email, city, weatherData);
             }
@@ -20,14 +26,17 @@ async function sendWeatherUpdates() {
     }
 }
 
+// Asynchronously fetch weather data for a specific city
 async function fetchWeatherDataForCity(city) {
     const client = await pool.connect();
     try {
+        // SQL query to select temperature stats for the specified city
         const query = `
             SELECT MAX(temperature) AS max_temp, MIN(temperature) AS min_temp, AVG(temperature) AS avg_temp
             FROM weather_data
             WHERE city = $1;
         `;
+        // Execute the query and return the result
         const result = await client.query(query, [city]);
         return result.rows[0]; 
     } catch (error) {
@@ -38,8 +47,9 @@ async function fetchWeatherDataForCity(city) {
     }
 }
 
-
+// Asynchronously send an email to a recipient with weather data for a city
 async function sendEmail(recipient, city, weatherData) {
+     // Configure nodemailer with email service and authentication details
     let transporter = nodemailer.createTransport({
         service: 'gmail', 
         auth: {
@@ -48,6 +58,7 @@ async function sendEmail(recipient, city, weatherData) {
         }
     });
 
+    // Set up email options including recipient, subject, and body
     let mailOptions = {
         from: 'geo360.live@gmail.com',
         to: recipient,
@@ -66,6 +77,7 @@ async function sendEmail(recipient, city, weatherData) {
             Geo360 Team.`
     };
 
+    // Send the email and log the result or error
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
             console.log('Email send error:', error);
