@@ -1,5 +1,21 @@
 ## Student ID : COBSCCOMP4Y222P-033
 
+
+### NodeJS Sever GitHub Link:
+https://github.com/smdthiranjaya/geo-360-Server
+
+### React WebApp GitHub Link:
+https://github.com/smdthiranjaya/Geo-360
+
+### Backend Server (Heroku) Hosted Link:
+https://www.geo360live.tech
+
+### Backend Server (Heroku) Swagger Link:
+https://www.geo360live.tech/api-docs/#/
+
+### React WebApp (Azure) Hosted Link:
+https://geo360live.tech/
+
 # Geo-360 Server
 
 Geo-360 Server is a backend service designed to provide comprehensive geographical data processing capabilities. Built with Node.js and Express, it leverages several key technologies including CORS, dotenv for environment variable management, node-fetch for making HTTP requests, nodemailer for email sending functionalities, PostgreSQL (pg) for database management, and Swagger for API documentation.
