@@ -20,6 +20,8 @@ https://geo360live.tech/
 
 Geo-360 Server is a backend service designed to provide comprehensive geographical data processing capabilities. Built with Node.js and Express, it leverages several key technologies including CORS, dotenv for environment variable management, node-fetch for making HTTP requests, nodemailer for email sending functionalities, PostgreSQL (pg) for database management, and Swagger for API documentation.
 
+![Artificial intelligence to Enhance Language Skills Presentation in Blue and Purple 3D Modern Style](https://github.com/smdthiranjaya/geo-360-Server/assets/37227365/d58dc91d-6cb8-4488-8e97-d4927bbf1e37)
+
 ![Screenshot 2567-04-27 at 17 15 52](https://github.com/smdthiranjaya/Geo-360/assets/37227365/ff3de2ce-1e39-40eb-b7cf-425e740eb201)
 
 ## INTRODUCTION
