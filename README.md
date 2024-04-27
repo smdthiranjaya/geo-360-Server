@@ -52,11 +52,11 @@ Describes the technical architecture encompassing the backend server on Heroku, 
 
 ### UML Sequence Diagram for Weather Data Processing
 
-<img width="894" alt="Screenshot 2567-04-27 at 17 56 36" src="https://github.com/smdthiranjaya/Geo-360/assets/37227365/94655c5d-4535-49ad-8151-36cd7172003d">
+![Artificial intelligence to Enhance Language Skills Presentation in Blue and Purple 3D Modern Style (2)](https://github.com/smdthiranjaya/geo-360-Server/assets/37227365/08a946d2-7440-4abe-a76a-337da6dfbe76)
 
 ### Deployment Diagram
- 
-<img width="714" alt="Screenshot 2567-04-27 at 17 55 40" src="https://github.com/smdthiranjaya/Geo-360/assets/37227365/859b92c4-b1af-4f6a-ac52-6ebf4a39149b">
+
+![Artificial intelligence to Enhance Language Skills Presentation in Blue and Purple 3D Modern Style (1)](https://github.com/smdthiranjaya/geo-360-Server/assets/37227365/44640b24-d023-45d4-93f8-211ab610b5df)
 
 ## IMPLEMENTATION 
 
